@@ -25,7 +25,7 @@ def set_global_seed(seed=42, deterministic=False):
         os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
 
-def BlackScholesPremium(T, S, K, sigma, r=0, alldata=False, option_type='call'):
+def BlackScholesPrice(T, S, K, sigma, r=0, greeks=False, option_type='call'):
     """
     Calculates the Black-Scholes price of a European call or put option, with optional return of Greeks.
 
@@ -41,7 +41,7 @@ def BlackScholesPremium(T, S, K, sigma, r=0, alldata=False, option_type='call'):
         Volatility of the underlying asset.
     r : float, optional
         Risk-free interest rate (default is 0).
-    alldata : bool, optional
+    greeks : bool, optional
         If True, returns a dictionary containing price and Greeks.
     option_type : str, optional
         'call' or 'put' (default is 'call').
@@ -49,7 +49,7 @@ def BlackScholesPremium(T, S, K, sigma, r=0, alldata=False, option_type='call'):
     Returns
     -------
     float or dict
-        Option price, or a dictionary with price and Greeks if `alldata=True`.
+        Option price, or a dictionary with price and Greeks if `greeks=True`.
 
     Raises
     ------
@@ -81,7 +81,7 @@ def BlackScholesPremium(T, S, K, sigma, r=0, alldata=False, option_type='call'):
     else:
         raise ValueError(f"Invalid option type: '{option_type}'. Select 'put' or 'call'.")
     
-    if alldata==True:
+    if greeks==True:
         return {
             'price' : price,
             'delta' : delta,

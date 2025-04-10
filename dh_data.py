@@ -4,10 +4,10 @@ module docstring
 
 import numpy as np
 
-def generate_GBM_data(N, sigma, d, n, K, T, S):
+def generate_GBM_data(N, sigma, d, n, K, T, S, option_type='call'):
     """
     Simulates Geometric Brownian Motion (GBM) price paths for an asset price 
-    and calculates the corresponding european call option payoff at maturity.
+    and calculates the corresponding european option payoff at maturity.
 
     Parameters
     ----------
@@ -25,13 +25,15 @@ def generate_GBM_data(N, sigma, d, n, K, T, S):
         Time to maturity (in years).
     S : float
         Initial asset price.
+    option_type : bool, optional
+        'call' or 'put' (default is 'call').
 
     Returns
     -------
     price_path : np.ndarray of shape (N, n+1, d)
         N simulated GBM paths.
     payoff : np.ndarray of shape (N, d)
-        European call option payoff.
+        European option payoff.
     """
     
     time_grid = np.linspace(0, T, n+1) # Discretized time-to-maturity
@@ -47,8 +49,11 @@ def generate_GBM_data(N, sigma, d, n, K, T, S):
     # Convert BM to a GBM price path: S_t = S exp(B_t - 0.5sigma^2 t)
     price_path = S * np.exp(sigma * BM_path - 0.5 * sigma**2 * time_grid[None, :, None])
 
-    # Calculate the European call option payoff
-    payoff_func = lambda x: 0.5* (np.abs(x-K)+x-K)
+    # Calculate the European option payoff
+    if option_type=='call':
+        payoff_func = lambda x: 0.5* (np.abs(x-K)+x-K)
+    else:
+        payoff_func = lambda x: 0.5 * (np.abs(x - K) + K - x)
     payoff = payoff_func(price_path[:,-1,:])
 
     return price_path, payoff

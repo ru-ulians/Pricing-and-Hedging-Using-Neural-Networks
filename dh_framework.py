@@ -65,13 +65,15 @@ def create_networks(d, hidden_nodes, L, n):
                     trainable = True,
                     kernel_initializer = tf.keras.initializers.RandomNormal(0,0.1),
                     bias_initializer = 'random_normal',
-                    name = srt(j)+'step'+srt(i)+'layer'
+                    name = str(j)+'step'+str(i)+'layer'
                 )
                 outputs = layer(x)
                 network = tf.keras.Model(inputs=inputs, outputs=outputs)
                 Hedging_Networks.append(network)
     return Hedging_Networks
 
+
+from tensorflow.keras.layers import Layer 
 
 class DeepHedgingLayer(Layer):
     """
@@ -108,15 +110,16 @@ class DeepHedgingLayer(Layer):
         A forward pass through the deep hedging layer.
         """
         price_difference = price[:,1:,:] - price[:, :-1,:]          # S_k - S_{k-1}
-        hedge = tf.zeros_like(price[:,0,:])                         # \Pi_0 = 0
+        hedge = tf.zeros_like(price[:,0,:])                         # PL_0 = 0
         premium = self.Premium_Network(tf.ones_like(price[:,0,:]))
 
         for j in range(self.n):
             strategy = self.Hedging_Networks[j](price[:,j,:])       # delta_k = F_k(S_k)
-            hedge += strategy * price_difference[:,j,:]             # \Pi += delta_k * (S_k-S_{k-1})
+            hedge += strategy * price_difference[:,j,:]             # PL += delta_k * (S_k-S_{k-1})
         
         outputs = premium + hedge                                   # Final portfolio value
         return outputs
+
 
 def build_dh_model(d, hidden_nodes, L, n):
     """
@@ -155,7 +158,7 @@ def build_dh_model(d, hidden_nodes, L, n):
     # Input: price paths of shape: (Nsample, n+1, d)
     price = tf.keras.Input(shape=(n+1,d))
 
-    # Output : \Pi + PnL
+    # Output : p_0 + PL
     outputs = DeepHedgingLayer(
         Hedging_Networks=Hedging_Networks,
         Premium_Network=Premium_Network,

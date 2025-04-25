@@ -35,8 +35,7 @@ def VaR(alpha=0.05):
     """
     def loss(y_true, y_pred):
         res = y_true - y_pred
-        loss = tf.abs(alpha * res)
-        return tf.reduce_mean(loss)
+        return tf.reduce_mean(tf.maximum(alpha * res, (alpha - 1) * res))
     return loss
 
 

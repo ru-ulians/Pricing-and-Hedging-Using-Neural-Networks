@@ -9,10 +9,6 @@ including:
 
 These tools support the training of end-to-end hedging strategies under
 risk measures (e.g., MSE, CVaR, entropic loss).
-
-Dependencies
-------------
-- TensorFlow
 """
 
 import tensorflow as tf

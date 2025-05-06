@@ -9,10 +9,6 @@ risk management and pricing, including:
 
 These losses can be used with TensorFlow models to train hedging strategies 
 that align with different risk preferences.
-
-Dependencies:
-- TensorFlow
-- TensorFlow Probability
 """
 
 import tensorflow as tf

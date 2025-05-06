@@ -1,5 +1,24 @@
 """
-MODULE DOCSTRING - TBA
+Experiment Functions for Deep Hedging Experiments
+
+This module provides tools for deep hedging testing and analysis, including:
+
+- Plotting utilities for training diagnostics
+- Statistical functions for evaluating residuals
+- Reproducibility utilities
+- Closed-form pricing formulas:
+    - Black-Scholes model
+    - Merton jump-diffusion model
+
+Functions
+---------
+- plot_training_curves : Plot training/validation loss curves.
+- residual_error_statistics : Summarize residual statistics.
+- set_global_seed : Set random seeds for reproducibility.
+- BlackScholesPrice : Compute Black-Scholes price and Greeks.
+- MertonJumpDiffusionPrice : Compute Merton jump-diffusion option price.
+
+These functions support model training, diagnostics, and benchmarking against analytical solutions.
 """
 
 from scipy.stats import norm

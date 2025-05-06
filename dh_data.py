@@ -1,5 +1,19 @@
 """
-Module docstring - TBA
+Data Generation Module for Deep Hedging Experiments
+
+This module provides functions to simulate asset price paths and corresponding option payoffs 
+for use in deep hedging frameworks. It supports:
+
+- Geometric Brownian Motion (GBM) models
+- Jump-Diffusion models with normally distributed jump sizes
+
+Functions
+---------
+- generate_GBM_data : Simulate GBM price paths and option payoffs.
+- generate_jump_diffusion_data : Simulate jump-diffusion price paths and option payoffs.
+
+These functions are designed for training and testing deep learning models under different 
+market dynamics and risk scenarios.
 """
 
 import numpy as np
